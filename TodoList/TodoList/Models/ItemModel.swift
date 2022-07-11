@@ -9,7 +9,8 @@ import Foundation
 
 // Immutable Struct
 
-struct ItemModel: Identifiable {
+// 모델을 Codable 프로토콜을 준수하게 하여 JSON 형식의 데이터를 저장하고 읽어올 수 있도록 함
+struct ItemModel: Identifiable, Codable {
     let id: String
     let title: String
     let isCompleted: Bool

@@ -13,21 +13,30 @@ struct ListView: View {
     @EnvironmentObject var listViewModel: ListViewModel
     
     var body: some View {
-        List {
-            ForEach(listViewModel.items) { item in
-                ListRowView(item: item)
-                    .onTapGesture {
-                        withAnimation(.linear) {
-                            listViewModel.updateItem(item: item)
-                        }
-                    }
+        ZStack {
+            if listViewModel.items.isEmpty {
+                NoItemsView()
+                    .transition(AnyTransition.opacity.animation(.easeIn))
             }
-            // 파라미터를 자동으로 연결시키기 때문에 괄호를 생략하여 사용 가능
-            // editing 모드 활성화 시 제어 가능
-            .onDelete(perform: listViewModel.deleteItem) // 리스트에서 Swipe and Delete가 가능하도록 하는 기능
-            .onMove(perform: listViewModel.moveItem)
+            else {
+                List {
+                    ForEach(listViewModel.items) { item in
+                        ListRowView(item: item)
+                            .onTapGesture {
+                                withAnimation(.linear) {
+                                    listViewModel.updateItem(item: item)
+                                }
+                            }
+                    }
+                    // 파라미터를 자동으로 연결시키기 때문에 괄호를 생략하여 사용 가능
+                    // editing 모드 활성화 시 제어 가능
+                    .onDelete(perform: listViewModel.deleteItem) // 리스트에서 Swipe and Delete가 가능하도록 하는 기능
+                    .onMove(perform: listViewModel.moveItem)
+                }
+                .listStyle(PlainListStyle())
+            }
         }
-        .listStyle(PlainListStyle())
+        
         .navigationTitle("Todo List ✏️")
         .navigationBarItems(
             leading: EditButton(),

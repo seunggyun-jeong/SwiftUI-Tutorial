@@ -27,19 +27,25 @@ import Foundation
 
 class ListViewModel: ObservableObject {
     
-    @Published var items: [ItemModel] = []
+    @Published var items: [ItemModel] = [] {
+        // didSet을 활용하여 배열의 변동이 있을 때 마다 saveItems함수를 실행 함
+        didSet {
+            saveItems()
+        }
+    }
+    let itemsKey: String = "items_key"
     
     init() {
         getItems()
     }
     
     func getItems() {
-        let newItems = [
-            ItemModel(title: "This is the first title!", isCompleted: false),
-            ItemModel(title: "This is the second", isCompleted: true),
-            ItemModel(title: "Third!", isCompleted: false)
-        ]
-        items.append(contentsOf: newItems)
+        guard // UserDefaults에 있는 데이터를 불러와 decode함
+            let data = UserDefaults.standard.data(forKey: itemsKey),
+            let savedItems = try? JSONDecoder().decode([ItemModel].self, from: data)
+        else { return }
+        
+        self.items = savedItems
     }
     
     func deleteItem(indexSet: IndexSet) {
@@ -58,6 +64,12 @@ class ListViewModel: ObservableObject {
     func updateItem(item: ItemModel) {
         if let index = items.firstIndex(where: { $0.id == item.id}) {
             items[index] = item.updateCompletion()
+        }
+    }
+    
+    func saveItems() { // JSONEncoder를 활용하여 JSON 형식으로 데이터를 저장
+        if let encodedData = try? JSONEncoder().encode(items) {
+            UserDefaults.standard.set(encodedData, forKey: itemsKey)
         }
     }
 }
