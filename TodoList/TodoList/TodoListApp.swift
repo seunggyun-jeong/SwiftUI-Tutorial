@@ -27,6 +27,7 @@ struct TodoListApp: App {
             NavigationView {
                 ListView()
             }
+            .navigationViewStyle(StackNavigationViewStyle())
             .environmentObject(listViewModel)
             // environmentObject를 통해 하위 뷰에 데이터 전달
         }
