@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F82" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="MyStrengthEntity" representedClassName="MyStrengthEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="myStrengthUUID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="strengthLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="ownStrength" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StrengthEntity" inverseName="personalStrength" inverseEntity="StrengthEntity"/>
+    </entity>
+    <entity name="StrengthEntity" representedClassName="StrengthEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="strengthColor" optional="YES" attributeType="String"/>
+        <attribute name="strengthName" optional="YES" attributeType="String"/>
+        <relationship name="personalStrength" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MyStrengthEntity" inverseName="ownStrength" inverseEntity="MyStrengthEntity"/>
+    </entity>
+</model>
